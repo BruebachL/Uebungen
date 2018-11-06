@@ -9,9 +9,13 @@ public static void main(String[] args)
 	double strecke = 0;
 	while (sekunden != zaehler)
 	{
-		strecke = strecke + (sekunden * sekunden * 9.80665 / 2);
-		System.out.println(strecke);
 		zaehler = zaehler + 1;
+		strecke = strecke + (zaehler * zaehler * 9.80665 / 2);
+		
+		if (zaehler == 1 || zaehler%5 == 0)
+		
+		System.out.println("Züruckgelegte Strecke: " + (int) Math.floor(strecke) + " Meter in " + (int) zaehler + " Sekunden");
+		
 	}	
 }
 }
