@@ -4,7 +4,7 @@ public static void main(String[] args)
 	{
 		float k = 1;
 		float ergebnis = 1;
-		float zwischenspeicher = 2;
+		float zwischenspeicher = 1;
 		while (zwischenspeicher-ergebnis>0.00001 || ergebnis == zwischenspeicher)
 			{
 				zwischenspeicher = ergebnis;
