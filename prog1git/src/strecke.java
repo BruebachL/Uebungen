@@ -11,7 +11,7 @@ public static void main(String[] args)
 	{
 		strecke = strecke + (sekunden * sekunden * 9.80665 / 2);
 		zaehler = zaehler + 1;
-		if (zaehler%5 == 0)
+		if (zaehler%5 == 1)
 		System.out.println("Zueruckgelegte Strecke:" + strecke + "Meter in " + zaehler + "Sekunden.");
 	}	
 }
