@@ -8,6 +8,7 @@ public class Sterne {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Bitte geben Sie die Anzahl der zu druckenden Zeilen an:");
         Sterndruck(scanner.nextInt());
+        scanner.close();
     }
     private static void Sterndruck(int zeilenAnzahl)
     {

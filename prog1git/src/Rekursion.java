@@ -12,6 +12,7 @@ public class Rekursion {
         int exponent = scanner.nextInt();
         System.out.println("Das Ergebnis betraegt:");
         System.out.println(potenz(basis, exponent));
+        scanner.close();
     }
     private static int potenz(int basis, int exponent)
     {
