@@ -10,6 +10,7 @@ public class Runden {
         System.out.println("Bitte geben Sie die Anzahl der Nachkommastellen an.");
         int nachkommastellen = scanner.nextInt();
         System.out.println("Die gerundete Zahl betraegt: \n" + runden(zahl, nachkommastellen));
+        scanner.close();
     }
     private static double runden(double zahl, int nachkommastellen) {
         if (nachkommastellen == 0) {
