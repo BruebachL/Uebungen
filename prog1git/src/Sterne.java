@@ -6,5 +6,24 @@ public class Sterne {
     public static void main(String[] args)
     {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Bitte geben Sie die Anzahl der zu druckenden Zeilen an:");
+        int zeilenAnzahl = scanner.nextInt();
+        Sterndruck(zeilenAnzahl);
+    }
+    private static void Sterndruck(int zeilenAnzahl)
+    {
+
+        for(int zeile = 1; zeile <= zeilenAnzahl; zeile++)
+        {
+            for(int leerzeichen = zeile; leerzeichen<zeilenAnzahl; leerzeichen++)
+            {
+                System.out.print(" ");
+            }
+            for (int sterne=0; sterne<zeile;sterne++)
+            {
+                System.out.print("* ");
+            }
+            System.out.print("\n");
+        }
     }
 }
