@@ -1,5 +1,3 @@
-package prog1git.src;
-
 import java.util.Scanner;
 
 public class Runden {
@@ -13,18 +11,10 @@ public class Runden {
         scanner.close();
     }
     private static double runden(double zahl, int nachkommastellen) {
+        String[] splitter = Double.toString(zahl).split("\\.");
         if (nachkommastellen == 0) {
             if(zahl>0) {
-                String[] splitter = Double.toString(zahl).split("\\.");
-                while (splitter[1].length() != 1) {
-                    double nachkommaziffern = Double.parseDouble(splitter[1]);
-                    if (nachkommaziffern % 10 <= 4) {
-                        nachkommaziffern = (nachkommaziffern - nachkommaziffern % 10) / 10;
-                    } else {
-                        nachkommaziffern = ((nachkommaziffern - nachkommaziffern % 10) / 10) + 1;
-                    }
-                    splitter[1] = Integer.toString((int) nachkommaziffern);
-                }
+                splitter[1] = rundung(splitter[1], 1);
                 int ersteNachkommaziffer = Integer.parseInt(splitter[1]);
                 if (ersteNachkommaziffer <= 4) {
                     return Integer.parseInt(splitter[0]);
@@ -32,16 +22,7 @@ public class Runden {
                     return Integer.parseInt(splitter[0]) + 1;
                 }
             }else{
-                String[] splitter = Double.toString(zahl).split("\\.");
-                while (splitter[1].length() != 1) {
-                    double nachkommaziffern = Double.parseDouble(splitter[1]);
-                    if (nachkommaziffern % 10 <= 4) {
-                        nachkommaziffern = (nachkommaziffern - nachkommaziffern % 10) / 10;
-                    } else {
-                        nachkommaziffern = ((nachkommaziffern - nachkommaziffern % 10) / 10) + 1;
-                    }
-                    splitter[1] = Integer.toString((int) nachkommaziffern);
-                }
+                splitter[1] = rundung(splitter[1], 1);
                 int ersteNachkommaziffer = Integer.parseInt(splitter[1]);
                 if (ersteNachkommaziffer <= 4) {
                     return Integer.parseInt(splitter[0]);
@@ -50,19 +31,22 @@ public class Runden {
                 }
             }
         } else {
-            String[] splitter = Double.toString(zahl).split("\\.");
-            for (splitter[1].length(); splitter[1].length() > nachkommastellen; ) {
-                double nachkommaziffern = Double.parseDouble(splitter[1]);
-                if (nachkommaziffern % 10 <= 4) {
-                    nachkommaziffern = (nachkommaziffern - nachkommaziffern % 10) / 10;
-                } else {
-                    nachkommaziffern = ((nachkommaziffern - nachkommaziffern % 10) / 10) + 1;
-                }
-                splitter[1] = Integer.toString((int) nachkommaziffern);
-            }
+            splitter[1] = rundung(splitter[1], nachkommastellen);
             String zusammengesetzt = String.join(".", splitter[0], splitter[1]);
             return Double.parseDouble(zusammengesetzt);
         }
+    }
+    private static String rundung(String splitter, int nachkommastellen){
+        while (splitter.length() > nachkommastellen) {
+            double nachkommaziffern = Double.parseDouble(splitter);
+            if (nachkommaziffern % 10 <= 4) {
+                nachkommaziffern = (nachkommaziffern - nachkommaziffern % 10) / 10;
+            } else {
+                nachkommaziffern = ((nachkommaziffern - nachkommaziffern % 10) / 10) + 1;
+            }
+            splitter = Integer.toString((int) nachkommaziffern);
+        }
+        return splitter;
     }
 }
 

@@ -1,5 +1,3 @@
-package prog1git.src;
-
 import java.util.Scanner;
 
 public class Rekursion {
