@@ -9,14 +9,21 @@ public class MittelMinMax {
         System.out.println("Kleinster Wert: " + table[0]);
         System.out.println("Größter Wert: "+ table[tableSize-1]);
         System.out.println("Arithmetischer Mittel: " + arithmeticMiddle(table, tableSize));
-
+        System.out.println("Standardabweichung: " + standardDeviation(table, tableSize));
     }
     private static double arithmeticMiddle(double[] table, int tableSize){
         double result = 0;
         for(double i = 0; i < tableSize; i++){
-            result += table[(int)i];
+            result += (table[(int)i]);
         }
         return result/tableSize;
+    }
+    private static double standardDeviation(double[] table, int tableSize){
+        double result = 0;
+        for(double i = 0; i < tableSize; i++){
+            result += ((table[(int)i]-arithmeticMiddle(table, tableSize))*(table[(int)i]-arithmeticMiddle(table, tableSize)));
+        }
+        return Math.sqrt(result/tableSize);
     }
     private static double[] createTable(int tableSize){
         double[] table = new double[tableSize];
