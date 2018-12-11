@@ -5,11 +5,15 @@ public class MittelMinMax {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Bitte geben Sie eine Tabellengröße an: ");
         int tableSize = scanner.nextInt();
-        double[] table = sortTable(createTable(tableSize), tableSize);
-        System.out.println("Kleinster Wert: " + table[0]);
-        System.out.println("Größter Wert: "+ table[tableSize-1]);
-        System.out.println("Arithmetischer Mittel: " + arithmeticMiddle(table, tableSize));
-        System.out.println("Standardabweichung: " + standardDeviation(table, tableSize));
+        if(tableSize>0) {
+            double[] table = sortTable(createTable(tableSize), tableSize);
+            System.out.println("Kleinster Wert: " + table[0]);
+            System.out.println("Größter Wert: " + table[tableSize - 1]);
+            System.out.println("Arithmetischer Mittel: " + arithmeticMiddle(table, tableSize));
+            System.out.println("Standardabweichung: " + standardDeviation(table, tableSize));
+        }else{
+            System.out.println("Fehler: Tabellengröße muss größer als 0 sein.");
+        }
     }
     private static double arithmeticMiddle(double[] table, int tableSize){
         double result = 0;
