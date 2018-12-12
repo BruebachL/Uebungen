@@ -19,40 +19,25 @@ public class TikTakToe {
 
     private static int checkWinner(int[][] playfield) {
         boolean horizontalWinFailed = false;
-        for (int row = 0; row < playfield.length; row++) {
-            for (int i = 0; i < playfield.length - 1; i++) {
-                for (int cnt = 0; cnt < playfield.length; cnt++) {
-                    if (playfield[row][i] != 0) {
-                        if (playfield[row][i] != playfield[row][cnt]) {
-                            horizontalWinFailed = true;
-                        }
-                    }
+
+            for (int row = 0; row < playfield.length; row++) {
+                if(contains(playfield[row],0)){
+                    horizontalWinFailed=true;
                 }
             }
-            if (!horizontalWinFailed) {
-                return 1;
-            }
-            horizontalWinFailed = false;
-        }
-        boolean verticalWinFailed = false;
-        for (int column = 0; column < playfield.length; column++) {
-            for (int i = 0; i < playfield.length - 1; i++) {
-                for (int cnt = 0; cnt < playfield.length; cnt++) {
-                    if (playfield[i][column] != 0) {
-                        if (playfield[i][column] != playfield[cnt][column]) {
-                            verticalWinFailed = true;
-                        }
-                    }
-                }
-            }
-            if (!verticalWinFailed) {
-                return 2;
-            }
-            verticalWinFailed = false;
+        if (!horizontalWinFailed) {
+            return 1;
         }
         return 0;
     }
-
+    public static boolean contains(final int[] array, final int key) {
+        for (final int i : array) {
+            if (i == key) {
+                return true;
+            }
+        }
+        return false;
+    }
     private static int[][] playerTurn(int[][] playfield, int playerToken) {
         Scanner scanner = new Scanner(System.in);
         String turn = scanner.nextLine();
