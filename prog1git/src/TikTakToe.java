@@ -17,6 +17,9 @@ public class TikTakToe {
                 playerToken = 1;
             }
             System.out.println(checkWinner(playfield));
+            if(checkWin(playfield)==true){
+                noWinner = false;
+            }
         }
     }
 
@@ -63,7 +66,50 @@ public class TikTakToe {
         }
         return "No player has won yet.";
     }
-    public static boolean contains(final int[] array, final int key) {
+    private static boolean checkWin(int[][] playfield) {
+        for(int row = 0; row<playfield.length; row++) {
+            int[] checkSize = new int[playfield.length];
+            for (int i = 0; i < checkSize.length; i++) {
+                checkSize[i] = playfield[row][i];
+            }
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 2)) {
+                    if (contains(checkSize, 1)) {
+                        return true;
+                    }
+                }
+            }
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 1)) {
+                    if (contains(checkSize, 2)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        for(int row = 0; row<playfield.length; row++) {
+            int[] checkSize = new int[playfield.length];
+            for (int i = 0; i < checkSize.length; i++) {
+                checkSize[i] = playfield[i][row];
+            }
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 2)) {
+                    if (contains(checkSize, 1)) {
+                        return true;
+                    }
+                }
+            }
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 1)) {
+                    if (contains(checkSize, 2)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    private static boolean contains(final int[] array, final int key) {
         for (final int i : array) {
             if (i == key) {
                 return true;
