@@ -125,6 +125,7 @@ private static char[] setSettings(char[] settings){
                         }
                 }
             }
+            break;
         case 4: System.out.println("Please choose a new color for the Player One token:");
             System.out.println("1. White");
             System.out.println("2. Cyan");
@@ -202,7 +203,8 @@ private static char[] setSettings(char[] settings){
                         }
                 }
             }
-        case 5: System.out.println("Please choose a new color for the Player One token:");
+            break;
+        case 5: System.out.println("Please choose a new color for the Player Two token:");
             System.out.println("1. White");
             System.out.println("2. Cyan");
             System.out.println("3. Magenta");
@@ -279,6 +281,7 @@ private static char[] setSettings(char[] settings){
                         }
                 }
             }
+            break;
     }
         return settings;
 }
