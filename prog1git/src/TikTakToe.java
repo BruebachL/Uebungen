@@ -34,7 +34,7 @@ public class TikTakToe {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
 
-    private static char[] setSettings(char[] settings) {
+    private static char[] setSettings(char[] settings, int[][] playfield) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please choose setting to adjust:");
         System.out.println("1. Player One Token");
@@ -47,22 +47,31 @@ public class TikTakToe {
             case 1:
                 System.out.println("Please choose a new token for Player One.");
                 boolean validInputOne = false;
+                scanner.nextLine();
+                String playerOneToken = scanner.nextLine();
                 while(!validInputOne) {
-                    scanner.nextLine();
-                    if(scanner.nextLine().charAt(0)!=settings[1]) {
-                        settings[0] = scanner.nextLine().charAt(0);
+
+                    if(playerOneToken.charAt(0)!=settings[1]) {
+                        settings[0] = playerOneToken.charAt(0);
                         validInputOne=true;
+                    }else{
+                        System.out.println("Player One's token must be different from Player Two's token.");
+                        playerOneToken = scanner.nextLine();
                     }
                 }
                 break;
             case 2:
                 System.out.println("Please choose a new token for Player Two.");
                 boolean validInput = false;
+                scanner.nextLine();
+                String playerTwoToken = scanner.nextLine();
                 while(!validInput) {
-                    scanner.nextLine();
-                    if(scanner.nextLine().charAt(0)!=settings[0]) {
-                        settings[1] = scanner.nextLine().charAt(0);
+                    if(playerTwoToken.charAt(0)!=settings[0]) {
+                        settings[1] = playerTwoToken.charAt(0);
                         validInput=true;
+                    }else{
+                        System.out.println("Player Two's token must be different from Player One's token.");
+                        playerTwoToken=scanner.nextLine();
                     }
                 }
                 break;
@@ -304,6 +313,10 @@ public class TikTakToe {
                 }
                 break;
         }
+        for (int cnt = 0; cnt < 51; cnt++) {
+            System.out.println();
+        }
+        printPlayfield(playfield, settings);
         return settings;
     }
 
@@ -456,7 +469,7 @@ public class TikTakToe {
                 turn = scanner.nextLine();
                 split = turn.split(" ");
                 if (turn.charAt(0) == 's') {
-                    setSettings(settings);
+                    setSettings(settings, playfield);
                 } else {
                     if ((Integer.parseInt(split[0]) > 3 || Integer.parseInt(split[0]) < 1 || Integer.parseInt(split[1]) > 3 || Integer.parseInt(split[1]) < 1)) {
                         System.out.println("Invalid move.");
@@ -804,6 +817,9 @@ public class TikTakToe {
                 }
 
             }
+            System.out.println();
+        }
+        for (int cnt = 0; cnt < 6; cnt++) {
             System.out.println();
         }
     }
