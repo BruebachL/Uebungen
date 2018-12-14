@@ -64,6 +64,48 @@ public class TikTakToe {
                 }
             }
         }
+        for(int check = 0; check< playfield.length; check++) {
+            int[] checkSize = new int[playfield.length];
+            for (int i = 0; i < checkSize.length; i++) {
+                checkSize[i] = playfield[i][i];
+            }
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 2)) {
+                    if (contains(checkSize, 1)) {
+                        return "Player 1 won with a diagonal victory!";
+                    }
+                }
+            }
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 1)) {
+                    if (contains(checkSize, 2)) {
+                        return "Player 2 won with a diagonal victory!";
+                    }
+                }
+            }
+        }
+
+        for(int check = 0; check< playfield.length; check++) {
+            int[] checkSize = new int[playfield.length];
+            for (int i = 0; i<checkSize.length; i++) {
+                    checkSize[i] = playfield[i][checkSize.length-1-i];
+            }
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 2)) {
+                    if (contains(checkSize, 1)) {
+                        return "Player 1 won with a diagonal victory!";
+                    }
+                }
+            }
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 1)) {
+                    if (contains(checkSize, 2)) {
+                        return "Player 2 won with a diagonal victory!";
+                    }
+                }
+            }
+        }
+
         return "No player has won yet.";
     }
     private static boolean checkWin(int[][] playfield) {
@@ -119,8 +161,18 @@ public class TikTakToe {
     }
     private static int[][] playerTurn(int[][] playfield, int playerToken) {
         Scanner scanner = new Scanner(System.in);
-        String turn = scanner.nextLine();
-        String[] split = turn.split(" ");
+        String[] split = new String[6];
+        String turn = new String();
+        boolean validInput = false;
+        while(!validInput) {
+            turn = scanner.nextLine();
+            split = turn.split(" ");
+            if ((Integer.parseInt(split[0]) > 3 || Integer.parseInt(split[0]) < 1 || Integer.parseInt(split[1]) > 3 || Integer.parseInt(split[1]) < 1)) {
+                System.out.println("Invalid move.");
+            }else{
+                validInput = true;
+            }
+        }
         boolean turnTaken = false;
         while (!turnTaken) {
             split = turn.split(" ");
