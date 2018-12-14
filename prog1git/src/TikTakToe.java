@@ -8,6 +8,9 @@ public class TikTakToe {
         int playerToken = 1;
         while (noWinner) {
             playfield = playerTurn(playfield, playerToken);
+            for (int cnt = 0; cnt<51; cnt++){
+                System.out.println();
+            }
             printPlayfield(playfield);
             playerToken++;
             if (playerToken == 3) {
@@ -17,18 +20,48 @@ public class TikTakToe {
         }
     }
 
-    private static int checkWinner(int[][] playfield) {
-        boolean horizontalWinFailed = false;
-
-            for (int row = 0; row < playfield.length; row++) {
-                if(contains(playfield[row],0)){
-                    horizontalWinFailed=true;
+    private static String checkWinner(int[][] playfield) {
+        for(int row = 0; row<playfield.length; row++) {
+            int[] checkSize = new int[playfield.length];
+            for (int i = 0; i < checkSize.length; i++) {
+                checkSize[i] = playfield[row][i];
+            }
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 2)) {
+                    if (contains(checkSize, 1)) {
+                        return "Player 1 won with a horizontal victory!";
+                    }
                 }
             }
-        if (!horizontalWinFailed) {
-            return 1;
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 1)) {
+                    if (contains(checkSize, 2)) {
+                        return "Player 2 won with a horizontal victory!";
+                    }
+                }
+            }
         }
-        return 0;
+        for(int row = 0; row<playfield.length; row++) {
+            int[] checkSize = new int[playfield.length];
+            for (int i = 0; i < checkSize.length; i++) {
+                checkSize[i] = playfield[i][row];
+            }
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 2)) {
+                    if (contains(checkSize, 1)) {
+                        return "Player 1 won with a vertical victory!";
+                    }
+                }
+            }
+            if (!contains(checkSize, 0)) {
+                if (!contains(checkSize, 1)) {
+                    if (contains(checkSize, 2)) {
+                        return "Player 2 won with a vertical victory!";
+                    }
+                }
+            }
+        }
+        return "No player has won yet.";
     }
     public static boolean contains(final int[] array, final int key) {
         for (final int i : array) {
@@ -46,11 +79,11 @@ public class TikTakToe {
         while (!turnTaken) {
             split = turn.split(" ");
             if (playerToken == 1) {
-                if (playfield[Integer.parseInt(split[0])][Integer.parseInt(split[1])] == 0) {
-                    playfield[Integer.parseInt(split[0])][Integer.parseInt(split[1])] = 1;
+                if (playfield[Integer.parseInt(split[0])-1][Integer.parseInt(split[1])-1] == 0) {
+                    playfield[Integer.parseInt(split[0])-1][Integer.parseInt(split[1])-1] = 1;
                     turnTaken = true;
                 } else {
-                    if (playfield[Integer.parseInt(split[0])][Integer.parseInt(split[1])] == 2) {
+                    if (playfield[Integer.parseInt(split[0])-1][Integer.parseInt(split[1])-1] == 2) {
                         System.out.println("Feld schon belegt!");
                         turn = scanner.nextLine();
                     } else {
@@ -59,11 +92,11 @@ public class TikTakToe {
                     }
                 }
             } else {
-                if (playfield[Integer.parseInt(split[0])][Integer.parseInt(split[1])] == 0) {
-                    playfield[Integer.parseInt(split[0])][Integer.parseInt(split[1])] = 2;
+                if (playfield[Integer.parseInt(split[0])-1][Integer.parseInt(split[1])-1] == 0) {
+                    playfield[Integer.parseInt(split[0])-1][Integer.parseInt(split[1])-1] = 2;
                     turnTaken = true;
                 } else {
-                    if (playfield[Integer.parseInt(split[0])][Integer.parseInt(split[1])] == 1) {
+                    if (playfield[Integer.parseInt(split[0])-1][Integer.parseInt(split[1])-1] == 1) {
                         System.out.println("Feld schon belegt!");
                         turn = scanner.nextLine();
                     } else {
