@@ -15,7 +15,7 @@ public class Galgenmaennchen {
         String Antwort = returnString();
         int[] korrekteVersuche = new int[Antwort.length()];
         while(versuche<16){
-            System.out.print("("+ versuche + "/15 Versuche) Bitte geben sie einen Char ein:");
+            System.out.print("("+ versuche + "/15 Versuch) Bitte geben sie einen Char ein:");
             char versuch = scanner.nextLine().charAt(0);
             korrekteVersuche = checkAntwort(Antwort, korrekteVersuche, versuch);
             printWord(Antwort, korrekteVersuche);
@@ -34,10 +34,10 @@ public class Galgenmaennchen {
 
         return "Versuchslimit überschritten";
     }
-    private static int[] checkAntwort(String Antwort, int[] korrekteVersuche, char versuch){
-        for(int i = 0; i<Antwort.length();i++){
+    private static int[] checkAntwort(String antwort, int[] korrekteVersuche, char versuch){
+        for(int i = 0; i<antwort.length();i++){
             if(korrekteVersuche[i]==0){
-                if (Antwort.charAt(i)==versuch){
+                if (antwort.charAt(i)==versuch||antwort.charAt(i)==versuch+32||antwort.charAt(i)==versuch-32){
                     korrekteVersuche[i]=1;
                 }
             }

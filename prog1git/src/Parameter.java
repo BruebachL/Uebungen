@@ -4,6 +4,7 @@ public class Parameter {
             System.out.println(Integer.valueOf(args[0])*Integer.valueOf(args[1]));
         }else{
             System.out.println("Fehler: Ungueltige Anzahl an Parametern.");
+            System.out.println("Gefunden: " + args.length + " Benötigt: 2");
         }
     }
 }
