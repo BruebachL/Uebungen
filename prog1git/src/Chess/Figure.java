@@ -1,11 +1,11 @@
 package Chess;
 
-public class Pawn{
+public class Figure{
     String name;
     int xPosition;
     int yPosition;
 
-    public void pawn (String name, int xPosition,int yPosition){
+    public void figure (String name, int xPosition,int yPosition){
         this.name = name;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
