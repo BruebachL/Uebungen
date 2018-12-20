@@ -1,6 +1,8 @@
 package Chess;
 
 
+import java.util.Scanner;
+
 public class Game {
     public static void main(String[] args){
         int[][] playfield = initPlayfield(8);
@@ -8,20 +10,29 @@ public class Game {
         Figure whites[] = initFigures(playfield,"white",8, "pawn");
         Figure whiteKing[] = initFigures(playfield, "white", 1, "king");
         Figure blackKing[] = initFigures(playfield, "black", 1, "king");
-        for(int i = 0; i<whites.length;i++){
-            System.out.println(whites[i].getName()+" "+whites[i].getXPosition()+" "+whites[i].getYPosition());
+        Figure whiteRooks[] = initFigures(playfield, "white", 2, "rook");
+        Figure whiteKnights[] = initFigures(playfield, "white", 2, "knight");
+        Figure whiteBishops[] = initFigures(playfield, "white", 2, "bishop");
+        Figure whiteQueen[] = initFigures(playfield, "white", 1, "queen");
+        Figure blackRooks[] = initFigures(playfield, "black", 2, "rook");
+        Figure blackKnights[] = initFigures(playfield, "black", 2, "knight");
+        Figure blackBishops[] = initFigures(playfield, "black", 2, "bishop");
+        Figure blackQueen[] = initFigures(playfield, "black", 1, "queen");
+        Figure allFigures[][] = {blacks,whites,whiteKing,blackKing,whiteRooks,whiteKnights,whiteBishops,whiteQueen,blackRooks,blackKnights,blackBishops,blackQueen};
+        for(int i=0;i<allFigures.length;i++){
+            fillPlayfield(playfield,allFigures[i],i);
         }
-        for(int i = 0; i<blacks.length;i++){
-            System.out.println(blacks[i].getName()+" "+blacks[i].getXPosition()+" "+blacks[i].getYPosition());
-        }
-        fillPlayfield(playfield,blacks,1);
-        fillPlayfield(playfield,whites,2);
-        fillPlayfield(playfield,whiteKing,3);
-        fillPlayfield(playfield,blackKing,4);
-        for(int i = 0; i<whiteKing.length;i++){
-            System.out.println(whiteKing[i].getName()+" "+whiteKing[i].getXPosition()+" "+whiteKing[i].getYPosition());
-        }
-        printPlayfield(playfield, whites, blacks, whiteKing);
+        printPlayfield(playfield,allFigures);
+        moveFigure(playfield,allFigures);
+        printPlayfield(playfield,allFigures);
+    }
+    private static void moveFigure(int[][] playfield,Figure[][] allFigures){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please take a turn");
+        String turn = scanner.nextLine();
+        String[] splitter = turn.split(" to ");
+
+        playfield[Integer.parseInt(individualMoves[1].charAt(0))][(Integer.parseInt(individualMoves[1].charAt(1)))] = playfield[Integer.parseInt(splitter[0].charAt(0))][(Integer.parseInt(individualMoves[1]))];
     }
     private static int[][] fillPlayfield(int[][] playfield, Figure[] figures, int uniqueID){
         for(int i = 0; i<figures.length;i++){
@@ -34,26 +45,52 @@ public class Game {
         for(int i=0; i<amount;i++){
             Figure[i] = new Figure();
             switch(type) {
-                case "pawn": if (faction == "white") {
-                    Figure[i].figure(faction + i, i, 1);
-                    break;
-                } else {
-                    Figure[i].figure(faction + i, i, 6);
-                    break;
-                }
-                case "king": if (faction == "white") {
-                    Figure[i].figure(faction + i, 5, 0);
-                    break;
-                } else {
-                    Figure[i].figure(faction + i, 5, 7);
-                    break;
-                }
-                case "rook":
+                case "pawn":
                     if (faction == "white") {
-                        Figure[i].figure(faction + i, 0, 0);
+                        Figure[i].figure(faction + i, i, 1);
                         break;
                     } else {
-                        Figure[i].figure(faction + i, i, 7);
+                        Figure[i].figure(faction + i, i, 6);
+                        break;
+                    }
+                case "king":
+                    if (faction == "white") {
+                        Figure[i].figure(faction + i, 3, 0);
+                        break;
+                    } else {
+                        Figure[i].figure(faction + i, 3, 7);
+                        break;
+                    }
+                case "rook":
+                    if (faction == "white") {
+                        Figure[i].figure(faction + i, i * 7, 0);
+                        break;
+                    } else {
+                        Figure[i].figure(faction + i, i * 7, 7);
+                        break;
+                    }
+                case "knight":
+                    if (faction == "white") {
+                        Figure[i].figure(faction + i, i*5+1, 0);
+                        break;
+                    } else {
+                        Figure[i].figure(faction + i, i*5+1, 7);
+                        break;
+                    }
+                case "bishop":
+                    if (faction == "white") {
+                        Figure[i].figure(faction + i, i*3+2, 0);
+                        break;
+                    } else {
+                        Figure[i].figure(faction + i, i*3+2, 7);
+                        break;
+                    }
+                case "queen":
+                    if (faction == "white") {
+                        Figure[i].figure(faction + i, 4, 0);
+                        break;
+                    } else {
+                        Figure[i].figure(faction + i, 4, 7);
                         break;
                     }
             }
@@ -73,48 +110,89 @@ public class Game {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
-    private static void printFigures(Figure[] figures, char token){
-        for (int cnt = 0; cnt < figures.length; cnt++) {
-            for (int i = 0; i < figures.length; i++) {
-                if (i == figures[i].getXPosition() && cnt == figures[i].getYPosition()) {
-                    System.out.print(ANSI_RED);
-                    System.out.print(" " + token + " ");
-                    System.out.print(ANSI_RESET);
+
+    private static void printPlayfield(int[][] playfield,Figure[][] allFigures) {
+        for (int cnt = 0; cnt < playfield.length; cnt++) {
+            for (int i = 0; i < playfield.length; i++) {
+                boolean printedSomething = false;
+                for(int f = 0; f<allFigures.length;f++){
+                    switch(f){
+                        case 0: if(checkFigure(allFigures[f],i,cnt)) {
+                            System.out.print(" P ");
+                            printedSomething = true;
+                            break;
+                        }
+                        case 1: if(checkFigure(allFigures[f],i,cnt)){
+                            System.out.print(" P ");
+                            printedSomething = true;
+                            break;
+                        }
+                        case 2: if(checkFigure(allFigures[f],i,cnt)){
+                            System.out.print(" K ");
+                            printedSomething = true;
+                            break;
+                        }
+                        case 3: if(checkFigure(allFigures[f],i,cnt)){
+                            System.out.print(" K ");
+                            printedSomething = true;
+                            break;
+                        }
+                        case 4: if(checkFigure(allFigures[f],i,cnt)){
+                            System.out.print(" R ");
+                            printedSomething = true;
+                            break;
+                        }
+                        case 5: if(checkFigure(allFigures[f],i,cnt)){
+                            System.out.print(" k ");
+                            printedSomething = true;
+                            break;
+                        }
+                        case 6: if(checkFigure(allFigures[f],i,cnt)){
+                            System.out.print(" B ");
+                            printedSomething = true;
+                            break;
+                        }
+                        case 7: if(checkFigure(allFigures[f],i,cnt)){
+                            System.out.print(" Q ");
+                            printedSomething = true;
+                            break;
+                        }
+                        case 8: if(checkFigure(allFigures[f],i,cnt)){
+                            System.out.print(" R ");
+                            printedSomething = true;
+                            break;
+                        }
+                        case 9: if(checkFigure(allFigures[f],i,cnt)){
+                            System.out.print(" k ");
+                            printedSomething = true;
+                            break;
+                        }
+                        case 10: if(checkFigure(allFigures[f],i,cnt)){
+                            System.out.print(" B ");
+                            printedSomething = true;
+                            break;
+                        }
+                        case 11: if(checkFigure(allFigures[f],i,cnt)){
+                            System.out.print(" Q ");
+                            printedSomething = true;
+                            break;
+                        }
+                    }
+                }
+                if(!printedSomething){
+                    System.out.print(" - ");
                 }
             }
             System.out.println();
         }
     }
-    private static void printPlayfield(int[][] playfield, Figure[] whitePawns, Figure[] blackPawns, Figure[] whiteKing) {
-        for (int cnt = 0; cnt < playfield.length; cnt++) {
-            for (int i = 0; i < playfield.length; i++) {
-
-
-                    if (i == whitePawns[i].getXPosition() && cnt == whitePawns[i].getYPosition()) {
-                        System.out.print(ANSI_RED);
-                        System.out.print(" W ");
-                        System.out.print(ANSI_RESET);
-                    } else {
-                        if (i == blackPawns[i].getXPosition() && cnt == blackPawns[i].getYPosition()) {
-                            System.out.print(ANSI_CYAN);
-                            System.out.print(" B ");
-                            System.out.print(ANSI_RESET);
-                        } else {
-                            if (i == whiteKing[i].getXPosition() && cnt == whiteKing[i].getYPosition()) {
-                                System.out.print(ANSI_CYAN);
-                                System.out.print(" K ");
-                                System.out.print(ANSI_RESET);
-                            } else {
-                                if(playfield[i][cnt]==0){
-                                System.out.print(" - ");
-                            }
-                            }
-                        }
-                }
-
+    private static boolean checkFigure(Figure[] tobechecked, int row, int column){
+        for(int i=0;i<tobechecked.length;i++){
+            if(tobechecked[i].xPosition==row&&tobechecked[i].yPosition==column){
+                return true;
             }
-            System.out.println();
         }
+        return false;
     }
     private static boolean contains(final int[] array, final int key) {
         for (final int i : array) {
