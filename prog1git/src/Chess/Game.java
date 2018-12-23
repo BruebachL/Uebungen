@@ -24,6 +24,7 @@ public class Game {
         }
         printPlayfield(playfield,allFigures);
         moveFigure(playfield,allFigures);
+        System.out.println("\r");
         printPlayfield(playfield,allFigures);
     }
     private static void moveFigure(int[][] playfield,Figure[][] allFigures){
@@ -31,8 +32,14 @@ public class Game {
         System.out.println("Please take a turn");
         String turn = scanner.nextLine();
         String[] splitter = turn.split(" to ");
-
-        playfield[Integer.parseInt(individualMoves[1].charAt(0))][(Integer.parseInt(individualMoves[1].charAt(1)))] = playfield[Integer.parseInt(splitter[0].charAt(0))][(Integer.parseInt(individualMoves[1]))];
+        allFigures[0][0].checkTargetField(allFigures,Integer.parseInt(splitter[1])%10,(Integer.parseInt(splitter[1])-Integer.parseInt(splitter[1])%10)/10);
+        for(int i = 0; i<allFigures.length;i++){
+            for(int cnt = 0; cnt<allFigures[i].length;cnt++){
+                if(allFigures[i][cnt].xPosition==Integer.parseInt(splitter[0])%10&&allFigures[i][cnt].yPosition==(Integer.parseInt(splitter[0])-Integer.parseInt(splitter[0])%10)/10){
+                    allFigures[i][cnt].moveFigure(allFigures,Integer.parseInt(splitter[1])%10,(Integer.parseInt(splitter[1])-Integer.parseInt(splitter[1])%10)/10);
+                }
+            }
+        }
     }
     private static int[][] fillPlayfield(int[][] playfield, Figure[] figures, int uniqueID){
         for(int i = 0; i<figures.length;i++){
@@ -193,6 +200,15 @@ public class Game {
             }
         }
         return false;
+    }
+    private static String checkFigurePresent(Figure[][] allFigures, int row, int column){
+        for(int cnt=0;cnt< allFigures.length;cnt++)
+        for(int i=0;i<allFigures.length;i++){
+            if(allFigures[cnt][i].xPosition==row&&allFigures[cnt][i].yPosition==column){
+                return allFigures[cnt][i].name;
+            }
+        }
+        return "Null";
     }
     private static boolean contains(final int[] array, final int key) {
         for (final int i : array) {
