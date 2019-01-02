@@ -4,6 +4,7 @@ package Chess;
 import java.util.Scanner;
 
 public class Game {
+    static boolean debugDone = false;
     public static void main(String[] args){
         int[][] playfield = initPlayfield(8);
         Figure blacks[] = initFigures(playfield,"black", 8, "pawn");
@@ -23,20 +24,32 @@ public class Game {
             fillPlayfield(playfield,allFigures[i],i);
         }
         printPlayfield(playfield,allFigures);
-        moveFigure(playfield,allFigures);
-        System.out.println("\r");
-        printPlayfield(playfield,allFigures);
+        while(!debugDone) {
+            moveFigure(playfield, allFigures);
+            System.out.println("\r");
+            printPlayfield(playfield, allFigures);
+            if(blackKing[0].xPosition==999){
+                debugDone=true;
+            }
+            if(whiteKing[0].xPosition==999){
+                debugDone=true;
+            }
+        }
     }
     private static void moveFigure(int[][] playfield,Figure[][] allFigures){
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please take a turn");
         String turn = scanner.nextLine();
-        String[] splitter = turn.split(" to ");
-        allFigures[0][0].checkTargetField(allFigures,Integer.parseInt(splitter[1])%10,(Integer.parseInt(splitter[1])-Integer.parseInt(splitter[1])%10)/10);
-        for(int i = 0; i<allFigures.length;i++){
-            for(int cnt = 0; cnt<allFigures[i].length;cnt++){
-                if(allFigures[i][cnt].xPosition==Integer.parseInt(splitter[0])%10&&allFigures[i][cnt].yPosition==(Integer.parseInt(splitter[0])-Integer.parseInt(splitter[0])%10)/10){
-                    allFigures[i][cnt].moveFigure(allFigures,Integer.parseInt(splitter[1])%10,(Integer.parseInt(splitter[1])-Integer.parseInt(splitter[1])%10)/10);
+        if(turn.charAt(0)=='d'){
+            debugDone=true;
+        }else {
+            String[] splitter = turn.split(" to ");
+           // allFigures[0][0].checkTargetField(allFigures, Integer.parseInt(splitter[1]) % 10, (Integer.parseInt(splitter[1]) - Integer.parseInt(splitter[1]) % 10) / 10);
+            for (int i = 0; i < allFigures.length; i++) {
+                for (int cnt = 0; cnt < allFigures[i].length; cnt++) {
+                    if (allFigures[i][cnt].xPosition == Integer.parseInt(splitter[0]) % 10 && allFigures[i][cnt].yPosition == (Integer.parseInt(splitter[0]) - Integer.parseInt(splitter[0]) % 10) / 10) {
+                        allFigures[i][cnt].moveFigure(allFigures, Integer.parseInt(splitter[1]) % 10, (Integer.parseInt(splitter[1]) - Integer.parseInt(splitter[1]) % 10) / 10);
+                    }
                 }
             }
         }
@@ -54,50 +67,50 @@ public class Game {
             switch(type) {
                 case "pawn":
                     if (faction == "white") {
-                        Figure[i].figure(faction + i, i, 1);
+                        Figure[i].figure(faction + i+type, i, 1);
                         break;
                     } else {
-                        Figure[i].figure(faction + i, i, 6);
+                        Figure[i].figure(faction + i+type, i, 6);
                         break;
                     }
                 case "king":
                     if (faction == "white") {
-                        Figure[i].figure(faction + i, 3, 0);
+                        Figure[i].figure(faction + i+type, 3, 0);
                         break;
                     } else {
-                        Figure[i].figure(faction + i, 3, 7);
+                        Figure[i].figure(faction + i+type, 3, 7);
                         break;
                     }
                 case "rook":
                     if (faction == "white") {
-                        Figure[i].figure(faction + i, i * 7, 0);
+                        Figure[i].figure(faction + i+type, i * 7, 0);
                         break;
                     } else {
-                        Figure[i].figure(faction + i, i * 7, 7);
+                        Figure[i].figure(faction + i+type, i * 7, 7);
                         break;
                     }
                 case "knight":
                     if (faction == "white") {
-                        Figure[i].figure(faction + i, i*5+1, 0);
+                        Figure[i].figure(faction + i+type, i*5+1, 0);
                         break;
                     } else {
-                        Figure[i].figure(faction + i, i*5+1, 7);
+                        Figure[i].figure(faction + i+type, i*5+1, 7);
                         break;
                     }
                 case "bishop":
                     if (faction == "white") {
-                        Figure[i].figure(faction + i, i*3+2, 0);
+                        Figure[i].figure(faction + i+type, i*3+2, 0);
                         break;
                     } else {
-                        Figure[i].figure(faction + i, i*3+2, 7);
+                        Figure[i].figure(faction + i+type, i*3+2, 7);
                         break;
                     }
                 case "queen":
                     if (faction == "white") {
-                        Figure[i].figure(faction + i, 4, 0);
+                        Figure[i].figure(faction + i+type, 4, 0);
                         break;
                     } else {
-                        Figure[i].figure(faction + i, 4, 7);
+                        Figure[i].figure(faction + i+type, 4, 7);
                         break;
                     }
             }
@@ -117,7 +130,17 @@ public class Game {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String ANSI_WHITE = "\u001B[37m";
-
+    private static void getColor(Figure[] subFigures, int i, int cnt){
+        for (Figure current:subFigures) {
+            if(current.xPosition==i&&current.yPosition==cnt){
+                if(current.name.contains("white")){
+                    System.out.print(ANSI_CYAN);
+                }else{
+                    System.out.print(ANSI_RED);
+                }
+            }
+        }
+    }
     private static void printPlayfield(int[][] playfield,Figure[][] allFigures) {
         for (int cnt = 0; cnt < playfield.length; cnt++) {
             for (int i = 0; i < playfield.length; i++) {
@@ -125,62 +148,86 @@ public class Game {
                 for(int f = 0; f<allFigures.length;f++){
                     switch(f){
                         case 0: if(checkFigure(allFigures[f],i,cnt)) {
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" P ");
+                            System.out.print(ANSI_RESET);
                             printedSomething = true;
                             break;
                         }
                         case 1: if(checkFigure(allFigures[f],i,cnt)){
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" P ");
                             printedSomething = true;
+                            System.out.print(ANSI_RESET);
                             break;
                         }
                         case 2: if(checkFigure(allFigures[f],i,cnt)){
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" K ");
+                            System.out.print(ANSI_RESET);
                             printedSomething = true;
                             break;
                         }
                         case 3: if(checkFigure(allFigures[f],i,cnt)){
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" K ");
+                            System.out.print(ANSI_RESET);
                             printedSomething = true;
                             break;
                         }
                         case 4: if(checkFigure(allFigures[f],i,cnt)){
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" R ");
+                            System.out.print(ANSI_RESET);
                             printedSomething = true;
                             break;
                         }
                         case 5: if(checkFigure(allFigures[f],i,cnt)){
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" k ");
+                            System.out.print(ANSI_RESET);
                             printedSomething = true;
                             break;
                         }
                         case 6: if(checkFigure(allFigures[f],i,cnt)){
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" B ");
+                            System.out.print(ANSI_RESET);
                             printedSomething = true;
                             break;
                         }
                         case 7: if(checkFigure(allFigures[f],i,cnt)){
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" Q ");
+                            System.out.print(ANSI_RESET);
                             printedSomething = true;
                             break;
                         }
                         case 8: if(checkFigure(allFigures[f],i,cnt)){
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" R ");
+                            System.out.print(ANSI_RESET);
                             printedSomething = true;
                             break;
                         }
                         case 9: if(checkFigure(allFigures[f],i,cnt)){
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" k ");
+                            System.out.print(ANSI_RESET);
                             printedSomething = true;
                             break;
                         }
                         case 10: if(checkFigure(allFigures[f],i,cnt)){
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" B ");
+                            System.out.print(ANSI_RESET);
                             printedSomething = true;
                             break;
                         }
                         case 11: if(checkFigure(allFigures[f],i,cnt)){
+                            getColor(allFigures[f],i,cnt);
                             System.out.print(" Q ");
+                            System.out.print(ANSI_RESET);
                             printedSomething = true;
                             break;
                         }
